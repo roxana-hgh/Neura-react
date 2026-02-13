@@ -1,0 +1,39 @@
+import { Link } from "react-router-dom";
+import { useTasksStore } from "../../../components/features/Tasks/stores/tasks";
+import { getListColorClass } from "../../../components/features/Tasks/utils/colorMapper";
+import AddNewList from "../../../components/features/Tasks/components/Lists/addNewList";
+
+function AllLists() {
+  const lists = useTasksStore((s) => s.lists);
+  return (
+    <div className="lists-page container mx-auto ">
+      <div className="flex items-center justify-between mb-3">
+        <div className=" ">
+          <h3 className="font-bold text-xl mb-1">Your Lists</h3>
+          <p className="text-muted-foreground text-sm">
+            You can see all your Tasks List here
+          </p>
+        </div>
+        <AddNewList />
+      </div>
+      <div className="mb-3 py-4">
+        <ul className="">
+          {lists.map((list) => (
+            <li key={list.id} className="py-2 ">
+              <Link to={`/list/${list.id}`}>
+                <div className=" flex items-center gap-3">
+                  <span
+                    className={`p-2 rounded-full ${getListColorClass(list.color)}`}
+                  ></span>
+                  <h6 className="text-base font-medium ">{list.name}</h6>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+export default AllLists;
