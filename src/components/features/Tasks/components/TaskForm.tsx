@@ -99,7 +99,6 @@ function TaskForm({ initialValues, defaultListId, onSubmit, submitLabel }: IProp
 
   const onValidSubmit = (data: TaskFormValues) => {
     setLoader(true);
-    console.log(data);
     
     onSubmit({
       ...data,
@@ -108,7 +107,7 @@ function TaskForm({ initialValues, defaultListId, onSubmit, submitLabel }: IProp
             .toISOString()
             .split("T")[0]
         : null,
-      list_id: Number(data.list_id)
+      list_id: data.list_id
     });
   };
 
