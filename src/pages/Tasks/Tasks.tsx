@@ -18,9 +18,14 @@ function TasksPage() {
           Here's a list of your tasks
         </p>
       </div>
-      <div className="flex items-center justify-between">
-        <TasksSearch />
-        <AddNewTask />
+      <div className="flex items-center justify-between flex-wrap gap-1 mb-3">
+        <div className="grow">
+          <TasksSearch />
+        </div>
+        <div className="shrink-0">
+          <AddNewTask />
+        </div>
+        
       </div>
       <div className="mb-3">
         <TasksList tasks={sortedTasks} label="Upcoming Tasks" />

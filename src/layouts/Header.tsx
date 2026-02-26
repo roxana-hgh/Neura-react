@@ -21,20 +21,32 @@ function Header() {
 
   return (
     <header className="w-full flex justify-between p-2 border-b h-auto">
-      <SidebarTrigger />
+      
+          <SidebarTrigger />
+      
+    
+       <div className="md:hidden">
+           <div className="logo-sec flex items-center gap-2  ">
+           
+            <span className="group-data-[collapsible=icon]:hidden">
+              <h2 className="text-lg font-bold ">Neura</h2>
+            </span>
+          </div>
+        </div>
 
-      <div className="px-3 flex items-center gap-3">
-        <Button
+      <div className="md:px-3 flex items-center gap-3">
+       
+          <Button
           variant="ghost"
           size="icon-xs"
-          className="flex items-center cursor-pointer"
+          className=" items-center cursor-pointer hidden md:flex"
           asChild
           onClick={OnToggleTheme}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
+            width="12"
+            height="12"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -51,9 +63,11 @@ function Header() {
             <path d="M12 19.6l8.85 -8.85"></path>
           </svg>
         </Button>
+        
+ 
         <Button
           variant="default"
-          size="sm"
+          size="xs"
           className="flex items-center"
           asChild
         >

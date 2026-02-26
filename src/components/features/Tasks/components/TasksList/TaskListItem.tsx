@@ -106,7 +106,7 @@ function TaskListItem({ task }: Iprops) {
 
         {/* ── Action buttons (non-clickable for task detail) ── */}
         <div
-          className="task-action hidden group-hover:flex items-center justify-self-end"
+          className="task-action max-sm:flex hidden group-hover:flex items-center justify-self-end"
           onClick={(e) => e.stopPropagation()}
         >
           <EditTask task={task} />

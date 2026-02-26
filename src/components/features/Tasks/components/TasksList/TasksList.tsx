@@ -25,7 +25,7 @@ function TasksList({ label, tasks }: Iprobs) {
             />
           </div>
         </CollapsibleTrigger>
-        <CollapsibleContent className="flex flex-col items-start gap-2 p-2.5 pt-0 text-sm">
+        <CollapsibleContent className="flex flex-col items-start p-2.5 pt-0 text-sm">
           {tasks.length ? tasks.map((task) => (
             <TaskListItem key={task.id} task={task} />
           )) : (
