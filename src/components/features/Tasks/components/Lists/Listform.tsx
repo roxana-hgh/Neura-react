@@ -5,6 +5,7 @@ import { ListSchema, type ListFormValues } from "../../schema/list.schema";
 import { Label } from "../../../../ui/label";
 import { Button } from "../../../../ui/button";
 import { Input } from "../../../../ui/input";
+import { Textarea } from "../../../../ui/textarea";
 
 
 // All available colors with their Tailwind bg class written out explicitly
@@ -37,6 +38,7 @@ function ListForm({ initialValues, onSubmit, submitLabel }: IProps) {
     defaultValues: {
       name: initialValues?.name ?? "",
       color: initialValues?.color ?? "blue",
+      description: initialValues?.description ?? "",
     },
   });
 
@@ -85,6 +87,15 @@ function ListForm({ initialValues, onSubmit, submitLabel }: IProps) {
         />
         {errors.color && (
           <p className="text-sm text-red-500 mt-1">{errors.color.message}</p>
+        )}
+      </div>
+
+      {/* ── Description ── */}
+      <div>
+        <Label className="mb-2">Description (optional)</Label>
+        <Textarea {...register("description")} placeholder="Add a description for this list…" className="resize-none" rows={3} />
+        {errors.description && (
+          <p className="text-sm text-red-500 mt-1">{errors.description.message}</p>
         )}
       </div>
 

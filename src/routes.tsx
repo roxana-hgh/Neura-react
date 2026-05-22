@@ -4,16 +4,31 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import TasksPage from "./pages/Tasks/Tasks";
 import AllLists from "./pages/Tasks/lists/AllLists";
 import SingleList from "./pages/Tasks/lists/SingleList";
+import AllNotesPage from "./pages/Notes/AllNotes";
+import SingleNotes from "./pages/Notes/SingleNotePage";
+import FocusTimerPage from "./pages/Focus/FocusTimerPage";
+import LoginPage from "./pages/Auth/loginPage";
+import SignUpPage from "./pages/Auth/SignUpPage";
+import AddEditNotePage from "./pages/Notes/AddEditNote";
 
 export const router = createBrowserRouter([
   {
-    path: '/',
-    element: <AppLayout /> ,
+    path: "/",
+    element: <AppLayout />,
     children: [
-     {index: true, element: <Dashboard />},
-     {path: "tasks", element: <TasksPage />},
-      {path: "lists", element: <AllLists/> },
-      {path: "list/:id", element: <SingleList/> },
+      { index: true, element: <Dashboard /> },
+      { path: "tasks", element: <TasksPage /> },
+      { path: "lists", element: <AllLists /> },
+      { path: "list/:id", element: <SingleList /> },
+      { path: "notes", element: <AllNotesPage /> },
+      { path: "note/:id", element: <SingleNotes /> },
+      { path: "notes/add", element: <AddEditNotePage /> },
+      { path: "note/:id/edit", element: <AddEditNotePage /> },
+      { path: "focus", element: <FocusTimerPage /> },
+
+     
     ],
-  }
+  },
+   { path: "login", element: <LoginPage /> },
+      { path: "signup", element: <SignUpPage /> },
 ]);

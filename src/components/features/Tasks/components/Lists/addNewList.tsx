@@ -2,20 +2,31 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 import type { ListFormValues } from "../../schema/list.schema";
 import { useTasksStore } from "../../stores/tasks";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../../../../ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../../../../ui/dialog";
 import { Button } from "../../../../ui/button";
 import ListForm from "./Listform";
 
+interface Iprops {
+  iconOnlyTrigger?: boolean;
+}
 
-function AddNewList() {
+function AddNewList({ iconOnlyTrigger }: Iprops) {
   const [open, setOpen] = useState(false);
   const addList = useTasksStore((s) => s.addList);
 
   const submitHandler = (data: ListFormValues) => {
     addList({
-      id: crypto.randomUUID(),
+      id: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) + 3,
       name: data.name,
       color: data.color,
+      description: data.description
     });
     setOpen(false);
   };
@@ -23,9 +34,15 @@ function AddNewList() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button type="button" size="sm" variant="outline">
-          <Plus /> New List
-        </Button>
+        {iconOnlyTrigger ? (
+          <Button type="button" size="icon-xs" variant="link">
+            <Plus size={12} />
+          </Button>
+        ) : (
+          <Button type="button" size="sm" variant="outline">
+            <Plus /> New List
+          </Button>
+        )}
       </DialogTrigger>
 
       <DialogContent>

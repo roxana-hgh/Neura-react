@@ -14,11 +14,11 @@ function TasksList({ label, tasks }: Iprobs) {
   const [isOpen, setIsOpen] = useState(true)
   return (
     <div className="tasks-list py-3">
-      <Collapsible open={isOpen}
+      <Collapsible open={isOpen} 
       onOpenChange={setIsOpen} className="w-full">
         <CollapsibleTrigger asChild>
-          <div className="task-list-title border-b py-3 font-bold text-lg flex justify-content-between items-center">
-            <h2>{label}</h2>
+          <div className="task-list-title border-b py-3 px-2 font-bold text-lg flex justify-content-between items-center">
+            <h2 className="text-base">{label}</h2>
             <ChevronDownIcon
               size={15}
               className="ml-auto group-data-[state=open]:rotate-180"
@@ -29,7 +29,7 @@ function TasksList({ label, tasks }: Iprobs) {
           {tasks.length ? tasks.map((task) => (
             <TaskListItem key={task.id} task={task} />
           )) : (
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground py-2">
               No tasks available.
             </p>
           ) }

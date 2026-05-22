@@ -7,30 +7,35 @@ import { useTasksStore } from "../../stores/tasks";
 import { getListColorClass } from "../../utils/colorMapper";
 import EditTask from "../EditTask";
 import TaskDetail from "../TaskDetail";
+import { useState } from "react";
+import AlertDialog from "../../../../utils/AlertDialog";
+
 
 interface Iprops {
   task: Task;
 }
 
 function TaskListItem({ task }: Iprops) {
-  const list = useTasksStore((s) =>
-    s.lists.find((l) => l.id === task.list_id)
-  );
-  
+  const list = useTasksStore((s) => s.lists.find((l) => l.id === task.list_id));
+  const [alertOpen, setAlertOpen] = useState(false)
+
   const toggleTask = useTasksStore((state) => state.toggleTask);
   const removeTask = useTasksStore((state) => state.removeTask);
 
+  const removeTaskHandler = () => {
+    setAlertOpen(true)
+  };
+
   return (
-    <div className="task-item group py-3 border-b w-full">
+    <>
+        <div className="task-item group py-3 border-b last-of-type:border-0 w-full ">
       <div className="flex items-start w-full gap-4">
         {/* ── Checkbox (non-clickable for task detail) ── */}
         <div className="py-1" onClick={(e) => e.stopPropagation()}>
           <Checkbox
             checked={task.completed}
             id={`task-item${task.id}`}
-            onCheckedChange={(checked) =>
-              toggleTask(task.id, Boolean(checked))
-            }
+            onCheckedChange={(checked) => toggleTask(task.id, Boolean(checked))}
           />
           <Label className="hidden" htmlFor={`task-item${task.id}`}></Label>
         </div>
@@ -59,7 +64,10 @@ function TaskListItem({ task }: Iprops) {
                 {task.subtasks && task.subtasks?.length > 0 && (
                   <span className="text-xs font-medium text-neutral-600 dark:text-neutral-400 flex gap-1 items-center">
                     <GitBranch size={14} />
-                    {task.subtasks.filter((subtask) => subtask.completed).length}{" "}
+                    {
+                      task.subtasks.filter((subtask) => subtask.completed)
+                        .length
+                    }{" "}
                     / {task.subtasks.length}
                   </span>
                 )}
@@ -86,14 +94,14 @@ function TaskListItem({ task }: Iprops) {
                           : "text-neutral-400"
                   }`}
                 >
-                  <Tag size={12} /> {task.priority}
+                  <Tag size={11} /> {task.priority}
                 </span>
 
                 {task.list_id && list && (
                   <span className="text-xs rounded-full flex gap-1 items-center">
                     <span
                       className={`p-1 rounded-full ${getListColorClass(
-                        list.color ?? "gray"
+                        list.color ?? "gray",
                       )}`}
                     ></span>
                     {list.name}
@@ -115,13 +123,27 @@ function TaskListItem({ task }: Iprops) {
             aria-label="remove task"
             className="text-muted-foreground"
             variant="ghost"
-            onClick={() => removeTask(task.id)}
+            onClick={removeTaskHandler}
           >
             <Trash className="hover:text-red-400" />
           </Button>
         </div>
       </div>
     </div>
+    {alertOpen && 
+      <AlertDialog 
+        title="Remove Task" 
+        description={`Are you Sure you want to Remove '${task.title}' ? `}
+        acceptButtonText="Remove"
+        AcceptButtonVariant="danger"
+        open={alertOpen} 
+        setOpen={setAlertOpen} 
+        onConfirm={()=>removeTask(task.id)}
+      /> 
+    }
+    
+    </>
+
   );
 }
 

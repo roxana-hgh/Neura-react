@@ -132,7 +132,7 @@ function TaskDetail({ task, trigger }: IProps) {
         )}
       </DialogTrigger>
 
-      <DialogContent className=" overflow-hidden border-neutral-200/60 dark:border-neutral-700/30 bg-white/98 dark:bg-neutral-900/98 backdrop-blur-2xl p-0 shadow-2xl">
+      <DialogContent className=" overflow-hidden border-neutral-200/60 dark:border-neutral-700/40 bg-white/98 dark:bg-neutral-900/80 backdrop-blur-xl p-0 shadow-2xl">
         {/* Subtle ambient effect */}
         <div className="absolute inset-0 bg-linear-to-br from-neutral-100/50 via-transparent to-neutral-200/40 dark:from-neutral-900/10 dark:via-transparent dark:to-neutral-950/10 pointer-events-none" />
         

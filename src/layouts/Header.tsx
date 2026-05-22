@@ -1,42 +1,48 @@
-import { Link } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { SidebarTrigger } from "../components/ui/sidebar";
 import { useEffect, useState } from "react";
 
+import ProfileMenu from "./UserProfileMenu";
+
 function Header() {
-  const [isDarkTheme, setisDarkTheme] = useState(true);
+  const [isDarkTheme, setisDarkTheme] = useState(
+    localStorage.getItem("theme") === "dark",
+  );
 
   const OnToggleTheme = () => {
-    setisDarkTheme((prev) => !prev);
-    if (isDarkTheme) {
+    if (!isDarkTheme) {
       document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
     } else {
       document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
     }
+    setisDarkTheme((prev) => !prev);
   };
 
   useEffect(() => {
-    document.documentElement.classList.add("dark");
-  }, []);
+    if (isDarkTheme) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      localStorage.setItem("theme", "light");
+    }
+  }, [isDarkTheme]);
 
   return (
     <header className="w-full flex justify-between p-2 border-b h-auto">
-      
-          <SidebarTrigger />
-      
-    
-       <div className="md:hidden">
-           <div className="logo-sec flex items-center gap-2  ">
-           
-            <span className="group-data-[collapsible=icon]:hidden">
-              <h2 className="text-lg font-bold ">Neura</h2>
-            </span>
-          </div>
+      <SidebarTrigger />
+
+      <div className="md:hidden">
+        <div className="logo-sec flex items-center gap-2  ">
+          <span className="group-data-[collapsible=icon]:hidden">
+            <h2 className="text-lg font-bold ">Neura</h2>
+          </span>
         </div>
+      </div>
 
       <div className="md:px-3 flex items-center gap-3">
-       
-          <Button
+        <Button
           variant="ghost"
           size="icon-xs"
           className=" items-center cursor-pointer hidden md:flex"
@@ -63,16 +69,8 @@ function Header() {
             <path d="M12 19.6l8.85 -8.85"></path>
           </svg>
         </Button>
-        
- 
-        <Button
-          variant="default"
-          size="xs"
-          className="flex items-center"
-          asChild
-        >
-          <Link to="/login">Login</Link>
-        </Button>
+
+        <ProfileMenu />
       </div>
     </header>
   );

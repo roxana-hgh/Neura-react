@@ -1,8 +1,9 @@
-import { Calendar, Home, Settings, StickyNote , CircleCheckBig, Timer } from "lucide-react";
+import { Calendar, Home, Settings, StickyNote , CircleCheckBig, Timer, Stars } from "lucide-react";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarRail } from "../../components/ui/sidebar";
 import { useTasksStore } from "../../components/features/Tasks/stores/tasks";
 import { getListColorClass } from "../../components/features/Tasks/utils/colorMapper";
 import { Link } from "react-router-dom";
+import AddNewList from "../../components/features/Tasks/components/Lists/addNewList";
 
 
 
@@ -18,21 +19,26 @@ const items = [
     url: "/tasks",
     icon: CircleCheckBig,
   },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
+  // {
+  //   title: "Calendar",
+  //   url: "#",
+  //   icon: Calendar,
+  // },
 
   {
     title: "Notes",
-    url: "#",
+    url: "/notes",
     icon: StickyNote,
   },
   {
     title: "Focus Mode",
-    url: "#",
+    url: "/focus",
     icon: Timer,
+  },
+  {
+    title: "Chat with AI",
+    url: "#",
+    icon: Stars,
   },
 ];
 
@@ -87,7 +93,7 @@ export function SidebarNav() {
             </div>
           </SidebarGroupLabel>
           <SidebarGroupAction className=" peer-data-[active=true]/menu-button:opacity-100">
-            {/* <Plus size={14} /> <span className="sr-only">Add Project</span> */}
+           <AddNewList iconOnlyTrigger />
           </SidebarGroupAction>
           <SidebarGroupContent>
             <SidebarMenu>

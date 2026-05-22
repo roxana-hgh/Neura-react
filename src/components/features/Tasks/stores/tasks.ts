@@ -78,8 +78,8 @@ const applyFilters = (
 // ─────────────────────────────────────────────
 
 const initialLists: TaskList[] = [
-  { id: 1, name: "Work" , color: "blue" },
-  { id: 2, name: "Personal", color:"red" },
+  { id: 1, name: "Work", color: "blue", description: "Work-related tasks and projects" },
+  { id: 2, name: "Personal", color: "red", description: "Personal reminders and goals" },
 ];
 
 const initialTasks: Task[] = [

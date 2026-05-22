@@ -20,6 +20,13 @@ export const ListSchema = z.object({
   color: z.enum(colorValues, {
     errorMap: () => ({ message: "Please select a color" }),
   }),
+
+  description: z
+    .string()
+    .max(500, "Description must be 500 characters or less")
+    .nullable()
+    .optional()
+    .transform((val) => val ?? null),
 });
 
 export type ListFormValues = z.infer<typeof ListSchema>;

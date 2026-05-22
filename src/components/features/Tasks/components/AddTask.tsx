@@ -27,7 +27,7 @@ function AddNewTask({ defaultListId }: IProps) {
   const submitHandler = (data: TaskFormValues) => {
     addTask({
       ...data,
-      id: crypto.randomUUID(),
+      id: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) + 5,
       completed: false,
       created_at: new Date().toISOString().split("T")[0],
       subtasks: [],

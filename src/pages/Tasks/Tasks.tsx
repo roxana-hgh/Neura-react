@@ -6,19 +6,17 @@ import { useAllTasksSortedByDueDate } from "../../components/features/Tasks/util
 
 function TasksPage() {
   const sortedTasks = useAllTasksSortedByDueDate()
-  
-  
-
 
   return (
     <div className="tasks-page container mx-auto ">
-      <div className=" mb-3">
+      <div className="flex items-center justify-between mb-3">
+ <div className=" ">
         <h3 className="font-bold text-xl mb-1">Your Tasks</h3>
         <p className="text-muted-foreground text-sm">
           Here's a list of your tasks
         </p>
       </div>
-      <div className="flex items-center justify-between flex-wrap gap-1 mb-3">
+      <div className="flex items-center  flex-wrap gap-2 ">
         <div className="grow">
           <TasksSearch />
         </div>
@@ -27,6 +25,8 @@ function TasksPage() {
         </div>
         
       </div>
+      </div>
+     
       <div className="mb-3">
         <TasksList tasks={sortedTasks} label="Upcoming Tasks" />
       </div>

@@ -22,7 +22,8 @@ export interface Task {
 export interface TaskList {
   id: string | number;
   name: string;
-  color: colors
+  color: colors;
+  description?: string | null;
 }
 
 

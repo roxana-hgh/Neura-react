@@ -40,7 +40,7 @@ const config: Config = {
         foreground: "hsl(var(--foreground))",
         background: "hsl(var(--background))",
 
-        secondary: "hsl(var(--secondary))",
+        
         destructive: "hsl(var(--destructive))",
         muted: "hsl(var(--muted))",
         accent: "hsl(var(--accent))",

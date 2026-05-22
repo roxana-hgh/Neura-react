@@ -27,7 +27,7 @@ function EditList({ list, trigger }: IProps) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {trigger ?? (
-          <Button type="button" size="icon" variant="ghost" aria-label="Edit list">
+          <Button type="button" size="icon-sm" variant="outline" aria-label="Edit list">
             <Pencil className="w-4 h-4" />
           </Button>
         )}
@@ -42,7 +42,7 @@ function EditList({ list, trigger }: IProps) {
         </DialogHeader>
 
         <ListForm
-          initialValues={{ name: list.name, color: list.color }}
+          initialValues={{ name: list.name, color: list.color, description: list.description ?? "" }}
           onSubmit={submitHandler}
           submitLabel="Save Changes"
         />
