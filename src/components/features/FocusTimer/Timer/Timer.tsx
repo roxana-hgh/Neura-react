@@ -14,64 +14,48 @@ function FocusTimer({
     onComplete
   }: Iprop) {
 
-  const [minutes, setMinutes] = useState(defaultMinutes);
-  const [seconds, setSeconds] = useState(defaultSeconds);
+  const [totalSeconds, setTotalSeconds] = useState(defaultMinutes * 60 + defaultSeconds);
   const [isRunning, setIsRunning] = useState(false);
-  const [prevMinutes, setPrevMinutes] = useState(minutes);
-  const [prevSeconds, setPrevSeconds] = useState(seconds);
   const intervalRef = useRef<number | null>(null);
+
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
 
   const today = new Date().toDateString()
 
   // Timer logic
   useEffect(() => {
     if (isRunning) {
-      
-      
       intervalRef.current = setInterval(() => {
-        setSeconds((prevSec) => {
-          if (prevSec === 0) {
-            if (minutes === 0) {
-              clearInterval(intervalRef.current!);
-              setIsRunning(false);
-              onComplete?.();
-              return 0;
-            }
-
-            setPrevMinutes(minutes);
-            setMinutes((prevMin) => prevMin - 1);
-            setPrevSeconds(59);
-            return 59;
+        setTotalSeconds((prev) => {
+          if (prev <= 1) {
+            setIsRunning(false);
+            onComplete?.();
+            return 0;
           }
-          
-          setPrevSeconds(prevSec);
-          return prevSec - 1;
+          return prev - 1;
         });
       }, 1000);
     } else if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
     return () => clearInterval(intervalRef.current!);
-  }, [isRunning, minutes, onComplete]);
+  }, [isRunning, onComplete]);
 
   // Button handlers
   const changeMinutes = (delta: number) => {
-    setPrevMinutes(minutes);
-    setMinutes(Math.max(0, minutes + delta));
+    setTotalSeconds(Math.max(0, totalSeconds + delta * 60));
   };
   const changeSeconds = (delta: number) => {
-    setPrevSeconds(seconds);
-    setSeconds(Math.max(0, Math.min(59, seconds + delta)));
+    const newSeconds = Math.max(0, Math.min(59, seconds + delta));
+    setTotalSeconds(Math.floor(totalSeconds / 60) * 60 + newSeconds);
   };
 
   const handleStart = () => setIsRunning(true);
   const handlePause = () => setIsRunning(false);
   const handleReset = () => {
     setIsRunning(false);
-    setPrevMinutes(defaultMinutes);
-    setMinutes(defaultMinutes);
-    setPrevSeconds(0);
-    setSeconds(0);
+    setTotalSeconds(defaultMinutes * 60 + defaultSeconds);
   };
 
   // const slideVariants = {
