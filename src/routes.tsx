@@ -10,11 +10,18 @@ import FocusTimerPage from "./pages/Focus/FocusTimerPage";
 import LoginPage from "./pages/Auth/loginPage";
 import SignUpPage from "./pages/Auth/SignUpPage";
 import AddEditNotePage from "./pages/Notes/AddEditNote";
+import ProtectedRoute from "./components/features/user/ProtectedRoute";
+import GuestRoute from "./components/features/user/GuestRoute";
+
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <AppLayout />,
+    element: (
+      <ProtectedRoute>
+        <AppLayout />
+      </ProtectedRoute>
+    ),
     children: [
       { index: true, element: <Dashboard /> },
       { path: "tasks", element: <TasksPage /> },
@@ -25,10 +32,22 @@ export const router = createBrowserRouter([
       { path: "notes/add", element: <AddEditNotePage /> },
       { path: "note/:id/edit", element: <AddEditNotePage /> },
       { path: "focus", element: <FocusTimerPage /> },
-
-     
     ],
   },
-   { path: "login", element: <LoginPage /> },
-      { path: "signup", element: <SignUpPage /> },
+  {
+    path: "login",
+    element: (
+      <GuestRoute>
+        <LoginPage />
+      </GuestRoute>
+    ),
+  },
+  {
+    path: "signup",
+    element: (
+      <GuestRoute>
+        <SignUpPage />
+      </GuestRoute>
+    ),
+  },
 ]);

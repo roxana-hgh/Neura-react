@@ -8,6 +8,7 @@ import NoteItem from "../../components/features/Notes/components/NoteItem";
 import { Link } from "react-router-dom";
 import { useTasksStore } from "../../components/features/Tasks/stores/tasks";
 import ListCardItem from "../../components/features/Tasks/components/Lists/ListCardItem";
+import { useSession } from "../../lib/auth-client";
 
 function Dashboard() {
   const getGreeting = () => {
@@ -23,6 +24,7 @@ function Dashboard() {
       return "Good night";
     }
   };
+  const { data: session } = useSession();
 
   const sortedTasks = useAllTasksSortedByDueDate().slice(0, 3);
    const Taskslists = useTasksStore(s => s.lists)
@@ -30,7 +32,7 @@ function Dashboard() {
   return (
     <div className="flex flex-col gap-4">
       <div className="mb-1 px-1">
-        <h1 className="font-bold text-lg">{getGreeting()}, Roxana</h1>
+        <h1 className="font-bold text-lg">{getGreeting()}, {session?.user.name}</h1>
         
       </div>
       <div className="glass py-3 px-4 ">

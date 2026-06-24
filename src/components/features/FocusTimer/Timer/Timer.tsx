@@ -1,27 +1,42 @@
 import {LucideChevronDown, LucideChevronUp, LucideLogOut, PauseCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "../../../ui/button";
+import { useFocusSessionStore } from "../../../../stores/focusSessionStore";
+import type { FocusSession } from "../../../../types/FocusSession";
 
 interface Iprop {
    defaultMinutes?: number,
    defaultSeconds?: number
    onComplete?: () => void
+   onSessionSaved?: (session: FocusSession) => void
 }
 
 function FocusTimer({
     defaultMinutes=25, 
     defaultSeconds=0,
-    onComplete
+    onComplete,
+    onSessionSaved
   }: Iprop) {
 
   const [totalSeconds, setTotalSeconds] = useState(defaultMinutes * 60 + defaultSeconds);
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef<number | null>(null);
+  const sessionStartTimeRef = useRef<Date | null>(null);
+  const initialSessionSecondsRef = useRef(totalSeconds);
+  const addSession = useFocusSessionStore((state) => state.addSession);
 
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
 
   const today = new Date().toDateString()
+
+  // Track session start time
+  useEffect(() => {
+    if (isRunning && !sessionStartTimeRef.current) {
+      sessionStartTimeRef.current = new Date();
+      initialSessionSecondsRef.current = totalSeconds;
+    }
+  }, [isRunning, totalSeconds]);
 
   // Timer logic
   useEffect(() => {
@@ -30,6 +45,23 @@ function FocusTimer({
         setTotalSeconds((prev) => {
           if (prev <= 1) {
             setIsRunning(false);
+            
+            // Save session when completed
+            if (sessionStartTimeRef.current) {
+              const endTime = new Date();
+              const durationSeconds = initialSessionSecondsRef.current - 1;
+              const newSession: Omit<FocusSession, 'id' | 'dateCreated'> = {
+                duration: durationSeconds,
+                startTime: sessionStartTimeRef.current,
+                endTime: endTime,
+                name: `Focus Session - ${new Date(sessionStartTimeRef.current).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
+                tag: 'work',
+              };
+              addSession(newSession);
+              onSessionSaved?.(newSession as FocusSession & { id: string; dateCreated: string });
+              sessionStartTimeRef.current = null;
+            }
+            
             onComplete?.();
             return 0;
           }
@@ -40,7 +72,7 @@ function FocusTimer({
       clearInterval(intervalRef.current);
     }
     return () => clearInterval(intervalRef.current!);
-  }, [isRunning, onComplete]);
+  }, [isRunning, onComplete, addSession, onSessionSaved]);
 
   // Button handlers
   const changeMinutes = (delta: number) => {
@@ -55,6 +87,7 @@ function FocusTimer({
   const handlePause = () => setIsRunning(false);
   const handleReset = () => {
     setIsRunning(false);
+    sessionStartTimeRef.current = null;
     setTotalSeconds(defaultMinutes * 60 + defaultSeconds);
   };
 

@@ -1,0 +1,18 @@
+import { Navigate } from "react-router-dom";
+import { useSession } from "../../../lib/auth-client";
+
+function GuestRoute({ children }: { children: React.ReactNode }) {
+  const { data: session, isPending } = useSession();
+
+  if (isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (session) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <>{children}</>;
+}
+
+export default GuestRoute;
