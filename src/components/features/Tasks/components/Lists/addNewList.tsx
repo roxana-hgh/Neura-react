@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import type { ListFormValues } from "../../schema/list.schema";
 import { useTasksStore } from "../../stores/tasks";
 import {
   Dialog,
@@ -12,6 +12,7 @@ import {
 } from "../../../../ui/dialog";
 import { Button } from "../../../../ui/button";
 import ListForm from "./Listform";
+import { useCreateList } from "../../hooks/useTasks";
 
 interface Iprops {
   iconOnlyTrigger?: boolean;
@@ -19,23 +20,26 @@ interface Iprops {
 
 function AddNewList({ iconOnlyTrigger }: Iprops) {
   const [open, setOpen] = useState(false);
-  const addList = useTasksStore((s) => s.addList);
 
-  const submitHandler = (data: ListFormValues) => {
-    addList({
-      id: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) + 3,
-      name: data.name,
-      color: data.color,
-      description: data.description
-    });
+const addList = useTasksStore((s) => s.addList);
+const { mutate: createList } = useCreateList();
+
+const handleSubmit = (values: any) => {
+  createList(values, {
+    onSuccess: (list) => {
+      addList(list);
     setOpen(false);
-  };
+    },
+  });
+};
+
+
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {iconOnlyTrigger ? (
-          <Button type="button" size="icon-xs" variant="link">
+          <Button asChild type="button" size="icon-xs" variant="link">
             <Plus size={12} />
           </Button>
         ) : (
@@ -53,7 +57,7 @@ function AddNewList({ iconOnlyTrigger }: Iprops) {
           </DialogDescription>
         </DialogHeader>
 
-        <ListForm onSubmit={submitHandler} submitLabel="Create List" />
+        <ListForm onSubmit={handleSubmit} submitLabel="Create List" />
       </DialogContent>
     </Dialog>
   );

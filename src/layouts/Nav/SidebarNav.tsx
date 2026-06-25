@@ -1,9 +1,11 @@
-import { Calendar, Home, Settings, StickyNote , CircleCheckBig, Timer, Stars } from "lucide-react";
+import {  Home, Settings, StickyNote , CircleCheckBig, Timer, Stars } from "lucide-react";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarRail } from "../../components/ui/sidebar";
 import { useTasksStore } from "../../components/features/Tasks/stores/tasks";
 import { getListColorClass } from "../../components/features/Tasks/utils/colorMapper";
 import { Link } from "react-router-dom";
 import AddNewList from "../../components/features/Tasks/components/Lists/addNewList";
+import { useTaskLists } from "../../components/features/Tasks/hooks/useTasks";
+import { useEffect } from "react";
 
 
 
@@ -43,7 +45,12 @@ const items = [
 ];
 
 export function SidebarNav() {
-  const Taskslists = useTasksStore(s => s.lists)
+    const { data: Taskslists } = useTaskLists();
+    const setLists = useTasksStore((s) => s.setLists);
+  
+    useEffect(() => {
+      if (Taskslists) setLists(Taskslists);
+    }, [Taskslists, setLists]);
   return (
     <Sidebar collapsible="icon" className="">
       <SidebarHeader>
@@ -97,7 +104,7 @@ export function SidebarNav() {
           </SidebarGroupAction>
           <SidebarGroupContent>
             <SidebarMenu>
-              {Taskslists.map((list) => (
+              {Taskslists?.length &&  Taskslists?.map((list) => (
                 <SidebarMenuItem key={list.id}>
                   <SidebarMenuButton asChild>
                     <Link to={`/list/${list.id}`}>

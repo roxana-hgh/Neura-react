@@ -2,9 +2,17 @@ import { Link } from "react-router-dom";
 import { useTasksStore } from "../../../components/features/Tasks/stores/tasks";
 import { getListColorClass } from "../../../components/features/Tasks/utils/colorMapper";
 import AddNewList from "../../../components/features/Tasks/components/Lists/addNewList";
+import { useTaskLists } from "../../../components/features/Tasks/hooks/useTasks";
+import { useEffect } from "react";
 
 function AllLists() {
-  const lists = useTasksStore((s) => s.lists);
+  const { data: lists } = useTaskLists();
+  const setLists = useTasksStore((s) => s.setLists);
+
+  useEffect(() => {
+    if (lists) setLists(lists);
+  }, [lists, setLists]);
+  
   return (
     <div className="lists-page container mx-auto ">
       <div className="flex items-center justify-between mb-3">
@@ -18,18 +26,19 @@ function AllLists() {
       </div>
       <div className="mb-3 py-4">
         <ul className="">
-          {lists.map((list) => (
-            <li key={list.id} className="py-2 ">
-              <Link to={`/list/${list.id}`}>
-                <div className=" flex items-center gap-3">
-                  <span
-                    className={`p-2 rounded-full ${getListColorClass(list.color)}`}
-                  ></span>
-                  <h6 className="text-base font-medium ">{list.name}</h6>
-                </div>
-              </Link>
-            </li>
-          ))}
+          {lists?.length &&
+            lists?.map((list) => (
+              <li key={list.id} className="py-2 ">
+                <Link to={`/list/${list.id}`}>
+                  <div className=" flex items-center gap-3">
+                    <span
+                      className={`p-2 rounded-full ${getListColorClass(list.color)}`}
+                    ></span>
+                    <h6 className="text-base font-medium ">{list.name}</h6>
+                  </div>
+                </Link>
+              </li>
+            ))}
         </ul>
       </div>
     </div>

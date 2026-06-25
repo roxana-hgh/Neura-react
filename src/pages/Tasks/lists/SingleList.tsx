@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTasksByList } from "../../../components/features/Tasks/utils/taskSelectors";
 import AddNewTask from "../../../components/features/Tasks/components/AddTask";
 import TasksList from "../../../components/features/Tasks/components/TasksList/TasksList";
@@ -9,24 +9,35 @@ import { Button } from "../../../components/ui/button";
 import { Trash } from "lucide-react";
 import AlertDialog from "../../../components/utils/AlertDialog";
 import { useState } from "react";
+import {
+  useDeleteList,
+  useTaskList,
+} from "../../../components/features/Tasks/hooks/useTasks";
+import Loader from "../../../components/ui/loader";
 
 function SingleList() {
   const params = useParams();
+  const listId = params.id ?? "";
 
-  const Tasks = useTasksByList(Number(params.id ?? 0));
-  const list = useTasksStore((s) =>
-    s.lists.find((l) => l.id === Number(params.id)),
-  );
+  const navigate = useNavigate();
 
-
-  
-  const deleteList = useTasksStore((state) => state.removeList);
+  const { data: list, isLoading } = useTaskList(listId);
+  const Tasks = useTasksByList(listId);
 
   const [alertOpen, setAlertOpen] = useState(false);
 
-  const DeleteListHandler = () => {
+
+  const { mutate: deleteList } = useDeleteList();
+  const removeFromStore = useTasksStore((s) => s.removeList);
+
+  const deleteHandler = () => {
     if (!list || !params.id) return;
-    deleteList(Number(params.id));
+    deleteList(list.id, {
+      onSuccess: () => {
+        removeFromStore(list.id);
+        navigate("/lists");   
+      },
+    });
   };
 
   return (
@@ -41,10 +52,7 @@ function SingleList() {
                 ></span>
                 <div className="">
                   <div className="mb-1 flex items-center gap-4">
-                    <h3 className="font-bold text-xl  ">
-                    {list?.name}  
-                  </h3>
-                
+                    <h3 className="font-bold text-xl  ">{list?.name}</h3>
                   </div>
                   <p className="text-muted-foreground text-sm">
                     {list.description ?? ""}
@@ -82,7 +90,10 @@ function SingleList() {
             </div>
           </div>
         )}
+
+        {isLoading && <Loader screen />}
       </div>
+
       {alertOpen && (
         <AlertDialog
           title="Remove Note"
@@ -91,7 +102,7 @@ function SingleList() {
           AcceptButtonVariant="danger"
           open={alertOpen}
           setOpen={setAlertOpen}
-          onConfirm={DeleteListHandler}
+          onConfirm={deleteHandler}
         />
       )}
     </>

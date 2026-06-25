@@ -12,6 +12,7 @@ import {
 import { Button } from "../../../ui/button";
 import type { TaskFormValues } from "../schema/task.schema";
 import { useTasksStore } from "../stores/tasks";
+import { useCreateTask } from "../hooks/useTasks";
 
 
 interface IProps {
@@ -24,20 +25,31 @@ function AddNewTask({ defaultListId }: IProps) {
   const [openModal, setOpenModal] = useState(false);
   const addTask = useTasksStore((s) => s.addTask);
 
-  const submitHandler = (data: TaskFormValues) => {
-    addTask({
-      ...data,
-      id: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) + 5,
-      completed: false,
-      created_at: new Date().toISOString().split("T")[0],
-      subtasks: [],
-      // list_id comes from the form — already set correctly
-      list_id: data.list_id ?? null,
-      description: data.description ?? null,
-      due_date: data.due_date ?? null,
-    });
-    setOpenModal(false);
-  };
+const { mutate: createTask } = useCreateTask();
+
+const handleSubmit = (values: TaskFormValues) => {
+  createTask(values, {
+    onSuccess: (task) => {
+      addTask(task);      // → updates store → selectors re-run instantly
+     setOpenModal(false);
+    },
+  });
+};
+
+  // const submitHandler = (data: TaskFormValues) => {
+  //   addTask({
+  //     ...data,
+  //     id: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) + 5,
+  //     completed: false,
+  //     created_at: new Date().toISOString().split("T")[0],
+  //     subtasks: [],
+  //     // list_id comes from the form — already set correctly
+  //     list_id: data.list_id ?? null,
+  //     description: data.description ?? null,
+  //     due_date: data.due_date ?? null,
+  //   });
+  //   setOpenModal(false);
+  // };
 
   return (
     <Dialog open={openModal} onOpenChange={setOpenModal}>
@@ -57,7 +69,7 @@ function AddNewTask({ defaultListId }: IProps) {
 
         <TaskForm
           defaultListId={defaultListId}
-          onSubmit={submitHandler}
+          onSubmit={handleSubmit}
           submitLabel="Add Task"
         />
       </DialogContent>

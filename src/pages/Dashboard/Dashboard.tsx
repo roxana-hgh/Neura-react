@@ -1,7 +1,6 @@
-import { useAllTasksSortedByDueDate } from "../../components/features/Tasks/utils/taskSelectors";
 import { RefreshCw, Stars, Timer } from "lucide-react";
 import { Button } from "../../components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs";
 import TaskItemSummery from "../../components/features/Tasks/components/TasksList/TaskListItemSummery";
 import { useNotesStore } from "../../components/features/Notes/stores/notes";
 import NoteItem from "../../components/features/Notes/components/NoteItem";
@@ -9,6 +8,8 @@ import { Link } from "react-router-dom";
 import { useTasksStore } from "../../components/features/Tasks/stores/tasks";
 import ListCardItem from "../../components/features/Tasks/components/Lists/ListCardItem";
 import { useSession } from "../../lib/auth-client";
+
+import { useTasks } from "../../components/features/Tasks/hooks/useTasks";
 
 function Dashboard() {
   const getGreeting = () => {
@@ -26,14 +27,19 @@ function Dashboard() {
   };
   const { data: session } = useSession();
 
-  const sortedTasks = useAllTasksSortedByDueDate().slice(0, 3);
-   const Taskslists = useTasksStore(s => s.lists)
-   const Notes = useNotesStore((state) => state.filteredNotes);
+  const { data: tasks } = useTasks();
+
+
+
+  const Taskslists = useTasksStore((s) => s.lists);
+  const Notes = useNotesStore((state) => state.filteredNotes);
+
   return (
     <div className="flex flex-col gap-4">
       <div className="mb-1 px-1">
-        <h1 className="font-bold text-lg">{getGreeting()}, {session?.user.name}</h1>
-        
+        <h1 className="font-bold text-lg">
+          {getGreeting()}, {session?.user.name}
+        </h1>
       </div>
       <div className="glass py-3 px-4 ">
         <div className=" text-indigo-400 flex items-center gap-1">
@@ -64,21 +70,21 @@ function Dashboard() {
               <div className="flex justify-between items-center">
                 <h2 className="font-medium text-base mb-2">Upcoming Tasks</h2>
                 <div className="flex items-center gap-2">
-                  <TabsList variant="">
-                  <TabsTrigger value="today">
-                    <span className="text-xs">Today</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="week">
-                    <span className="text-xs">This Week</span>
-                  </TabsTrigger>
-                </TabsList>
-                {/* <Button size="icon-xs" title="add task" variant="outline"><Plus size={12}/> </Button> */}
+                  <TabsList >
+                    <TabsTrigger value="today">
+                      <span className="text-xs">Today</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="week">
+                      <span className="text-xs">This Week</span>
+                    </TabsTrigger>
+                  </TabsList>
+                  {/* <Button size="icon-xs" title="add task" variant="outline"><Plus size={12}/> </Button> */}
                 </div>
               </div>
 
               <TabsContent value="today">
-                {sortedTasks.length ? (
-                  sortedTasks.map((task) => (
+                {tasks?.length ? (
+                  tasks.slice(0,3).map((task) => (
                     <TaskItemSummery key={task.id} task={task} />
                   ))
                 ) : (
@@ -88,8 +94,8 @@ function Dashboard() {
                 )}
               </TabsContent>
               <TabsContent value="week">
-                {sortedTasks.length ? (
-                  sortedTasks.map((task) => (
+                {tasks?.length ? (
+                   tasks.slice(0,3).map((task) => (
                     <TaskItemSummery key={task.id} task={task} />
                   ))
                 ) : (
@@ -132,29 +138,33 @@ function Dashboard() {
       </div>
       <div className=" py-3 h-full">
         <div className="flex justify-between items-center px-1">
-           <h2 className="font-medium text-base mb-2">Projects</h2>
-           <Link to={"/lists"}><Button size="sm" variant="ghost"><span className="text-xs">View All</span></Button></Link>
+          <h2 className="font-medium text-base mb-2">Projects</h2>
+          <Link to={"/lists"}>
+            <Button size="sm" variant="ghost">
+              <span className="text-xs">View All</span>
+            </Button>
+          </Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 py-2">
-             {Taskslists.slice(0,4).map((list) => (
+          {Taskslists.slice(0, 4).map((list) => (
             <ListCardItem key={list.id} list={list} className="" />
           ))}
         </div>
-                
-
       </div>
       <div className="py-3  h-full">
         <div className="flex justify-between items-center px-1">
-           <h2 className="font-medium text-base mb-2">Latest Notes</h2>
-           <Link to={"/notes"}><Button size="sm" variant="ghost"><span className="text-xs">View All</span></Button></Link>
+          <h2 className="font-medium text-base mb-2">Latest Notes</h2>
+          <Link to={"/notes"}>
+            <Button size="sm" variant="ghost">
+              <span className="text-xs">View All</span>
+            </Button>
+          </Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 py-2">
-             {Notes.slice(0,4).map((note) => (
+          {Notes.slice(0, 4).map((note) => (
             <NoteItem key={note.id} note={note} className="" />
           ))}
         </div>
-                
-
       </div>
     </div>
   );

@@ -12,7 +12,7 @@ import { Button } from "../../../ui/button";
 import TaskForm from "./TaskForm";
 import type { TaskFormValues } from "../schema/task.schema";
 import type { Task } from "../../../../types/Tasks";
-import { useTasksStore } from "../stores/tasks";
+import { useUpdateTask } from "../hooks/useTasks";
 
 interface IProps {
   task: Task;
@@ -22,22 +22,30 @@ interface IProps {
 
 function EditTask({ task, trigger }: IProps) {
   const [open, setOpen] = useState(false);
-  const updateTask = useTasksStore((s) => s.updateTask);
+
+  const { mutate: updateTask } = useUpdateTask();
 
   const submitHandler = (data: TaskFormValues) => {
-    updateTask(task.id, {
-      ...data,
-      // Preserve fields that aren't in the form
-      subtasks: task.subtasks,
-    });
-    setOpen(false);
+    updateTask(
+      { id: task.id, values: data },
+      {
+        onSuccess: () => {
+          setOpen(false);
+        },
+      },
+    );
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {trigger ?? (
-          <Button type="button" size="icon" variant="ghost" aria-label="Edit task">
+          <Button
+            type="button"
+            size="icon"
+            variant="ghost"
+            aria-label="Edit task"
+          >
             <Pencil className="w-4 h-4" />
           </Button>
         )}
