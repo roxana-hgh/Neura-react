@@ -1,11 +1,12 @@
 import { Navigate } from "react-router-dom";
 import { useSession } from "../../../lib/auth-client";
+import Loader from "../../ui/loader";
 
 function GuestRoute({ children }: { children: React.ReactNode }) {
   const { data: session, isPending } = useSession();
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return <Loader screen />;
   }
 
   if (session) {

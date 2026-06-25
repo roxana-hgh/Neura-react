@@ -94,14 +94,14 @@ function SignUpForm() {
               <p className="text-sm text-red-500 mt-1">{errors.confirmPassword.message}</p>
             )}
           </div>
-          <Button className="mt-3" type="submit" disabled={isSubmitting}>
+          <Button variant="default" className="mt-3 bg-neutral-900 text-white hover:bg-neutral-800" type="submit" disabled={isSubmitting}>
             {isSubmitting ? "Creating account..." : "Sign Up"}
           </Button>
           <p className="text-muted-foreground text-sm text-center w-full my-1">
             Already have an account?
             <Link
               to={"/login"}
-              className="text-primary font-medium hover:underline mx-2"
+              className="text-neutral-800 font-medium hover:underline mx-2"
             >
               Login
             </Link>

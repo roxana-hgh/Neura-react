@@ -1,9 +1,9 @@
 function LoginSignUpLayout() {
   return (
     <div className=" h-full">
-      <div className="neura h-full bg-primary">
+      <div className="neura h-full bg-neutral-900">
         <div className="md:w-2/3 m-auto lg:flex flex-col justify-center gap-3 h-full hidden">
-          <span className="p-2 h-12 w-12 flex justify-center items-center font-bold text-lg bg-primary-foreground text-primary rounded mb-2">
+          <span className="p-2 h-12 w-12 flex justify-center items-center font-bold text-lg bg-white text-neutral-900 rounded mb-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -16,18 +16,18 @@ function LoginSignUpLayout() {
               />
             </svg>
           </span>
-          <h1 className="text-4xl text-primary-foreground font-bold">NEURA</h1>
-          <span className="seprator w-12 pb-1 bg-primary-foreground block my-3"></span>
-          <h3 className="text-primary-foreground font-medium text-3xl p-0">
+          <h1 className="text-4xl text-white font-bold">NEURA</h1>
+          <span className="seprator w-12 pb-1 bg-white block my-3"></span>
+          <h3 className="text-white font-medium text-3xl p-0">
             Think Less, Do More
           </h3>
-          <p className="text-primary-foreground text-lg">
+          <p className="text-white text-lg">
             The AI-powered task assistant that helps you focus on what matters
             most.
           </p>
         </div>
         <div className="p-6 m-auto flex  flex-col justify-center items-center gap-2 h-full mt-10 mb-5 lg:hidden">
-          <span className="p-2 h-10 w-10 flex justify-center items-center font-bold text-lg bg-primary-foreground text-primary rounded mb-2">
+          <span className="p-2 h-10 w-10 flex justify-center items-center font-bold text-lg bg-white text-primary rounded mb-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -40,9 +40,9 @@ function LoginSignUpLayout() {
               />
             </svg>
           </span>
-          <h1 className="text-2xl text-primary-foreground font-bold">NEURA</h1>
+          <h1 className="text-2xl text-white font-bold">NEURA</h1>
 
-          <h3 className="text-primary-foreground font-medium text-lg p-0">
+          <h3 className="text-white font-medium text-lg p-0">
             Think Less, Do More
           </h3>
         </div>

@@ -1,33 +1,12 @@
 import { Button } from "../components/ui/button";
 import { SidebarTrigger } from "../components/ui/sidebar";
-import { useEffect, useState } from "react";
+import { useThemeStore } from "../stores/themeStore";
 
 import ProfileMenu from "./UserProfileMenu";
 
 function Header() {
-  const [isDarkTheme, setisDarkTheme] = useState(
-    localStorage.getItem("theme") === "dark",
-  );
-
-  const OnToggleTheme = () => {
-    if (!isDarkTheme) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-    setisDarkTheme((prev) => !prev);
-  };
-
-  useEffect(() => {
-    if (isDarkTheme) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      localStorage.setItem("theme", "light");
-    }
-  }, [isDarkTheme]);
+  const isDarkTheme = useThemeStore((state) => state.isDark);
+  const toggleTheme = useThemeStore((state) => state.toggleTheme);
 
   return (
     <header className="w-full flex justify-between p-2 border-b h-auto">
@@ -47,7 +26,9 @@ function Header() {
           size="icon-xs"
           className=" items-center cursor-pointer hidden md:flex"
           asChild
-          onClick={OnToggleTheme}
+          onClick={toggleTheme}
+          aria-label={isDarkTheme ? "Switch to light theme" : "Switch to dark theme"}
+          title={isDarkTheme ? "Switch to light theme" : "Switch to dark theme"}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
