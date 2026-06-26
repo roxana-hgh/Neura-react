@@ -1,34 +1,45 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useNotesStore } from "../../components/features/Notes/stores/notes";
+
 import AddEditNoteForm from "../../components/features/Notes/components/AddEditNoteForm";
 import type { NoteFormValues } from "../../components/features/Notes/schema/note.schema";
+import { useCreateNote, useNote, useUpdateNote } from "../../components/features/Notes/hooks/useNotes";
+import { toast } from "../../lib/toast";
 
 function AddEditNotePage() {
-  const { id } = useParams();
-  const note = useNotesStore.getState().getNote(id);
-  const AddNote = useNotesStore((state) => state.addNote);
-  const EditNote = useNotesStore((state) => state.updateNote);
-  const navigate = useNavigate();
+const { id } = useParams();
+const navigate = useNavigate();
 
-  const editHandler = (data: NoteFormValues) => {
-    if (!id || !note) return;
-    const noteData = {
-      ...data,
-      id: note.id,
-      created_at: new Date().toISOString().split("T")[0],
-    };
-    EditNote(Number(id), noteData)
-    navigate(`/note/${note.id}`)
-  };
-  const AddHandler = (data: NoteFormValues) => {
-    const noteData = {
-      ...data,
-      id: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) + 3,
-      created_at: new Date().toISOString().split("T")[0],
-    };
-    AddNote(noteData)
-    navigate(`/notes`)
-  };
+const { data: note } = useNote(id ?? "");
+const createNote = useCreateNote();
+const updateNote = useUpdateNote();
+
+const editHandler = (data: NoteFormValues) => {
+  if (!id || !note) return;
+  updateNote.mutate(
+    { id, ...data },
+    { onSuccess: () => {
+      navigate(`/note/${id}`);
+      toast.success("Note updated successfully");
+    },
+    onError: () => {
+      toast.error("Failed to update note");
+    }
+  
+  }
+  );
+};
+
+const addHandler = (data: NoteFormValues) => {
+  createNote.mutate(data, {
+    onSuccess: (newNote) => {
+      navigate(`/note/${newNote.id}`);
+      toast.success("Note created successfully");
+    },
+    onError: () => {
+      toast.error("Failed to create note");
+    }
+  });
+};
 
   return (
     <div className="">
@@ -37,7 +48,7 @@ function AddEditNotePage() {
           <AddEditNoteForm onSubmit={editHandler} note={note} />
         </div>
       ) : (
-        <AddEditNoteForm onSubmit={AddHandler} />
+        <AddEditNoteForm onSubmit={addHandler} />
       )}
     </div>
   );

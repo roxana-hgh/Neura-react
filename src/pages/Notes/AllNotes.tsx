@@ -1,12 +1,13 @@
 import NoteItem from "../../components/features/Notes/components/NoteItem";
-import { useNotesStore } from "../../components/features/Notes/stores/notes";
 import { Plus } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import SearchNote from "../../components/features/Notes/components/SearchNote";
 import { Link } from "react-router-dom";
+import { useNotes } from "../../components/features/Notes/hooks/useNotes";
+import Loader from "../../components/ui/loader";
 
 function AllNotesPage() {
-  const Notes = useNotesStore((state) => state.filteredNotes);
+  const {notes , isLoading } = useNotes();
 
   return (
     <div className="notes-page container mx-auto ">
@@ -32,9 +33,13 @@ function AllNotesPage() {
       </div>
       <div className="mb-3 py-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-          {Notes.map((note) => (
-            <NoteItem key={note.id} note={note} />
-          ))}
+          {isLoading ? (
+            <Loader screen />
+          ) : (
+            notes.map((note) => (
+              <NoteItem key={note.id} note={note} />
+            ))
+          )}
         </div>
       </div>
     </div>

@@ -2,7 +2,6 @@ import { RefreshCw, Stars, Timer } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs";
 import TaskItemSummery from "../../components/features/Tasks/components/TasksList/TaskListItemSummery";
-import { useNotesStore } from "../../components/features/Notes/stores/notes";
 import NoteItem from "../../components/features/Notes/components/NoteItem";
 import { Link } from "react-router-dom";
 import { useTasksStore } from "../../components/features/Tasks/stores/tasks";
@@ -10,6 +9,7 @@ import ListCardItem from "../../components/features/Tasks/components/Lists/ListC
 import { useSession } from "../../lib/auth-client";
 
 import { useTasks } from "../../components/features/Tasks/hooks/useTasks";
+import { useNotes } from "../../components/features/Notes/hooks/useNotes";
 
 function Dashboard() {
   const getGreeting = () => {
@@ -26,13 +26,9 @@ function Dashboard() {
     }
   };
   const { data: session } = useSession();
-
   const { data: tasks } = useTasks();
-
-
-
   const Taskslists = useTasksStore((s) => s.lists);
-  const Notes = useNotesStore((state) => state.filteredNotes);
+  const {notes } = useNotes();
 
   return (
     <div className="flex flex-col gap-4">
@@ -161,7 +157,7 @@ function Dashboard() {
           </Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 py-2">
-          {Notes.slice(0, 4).map((note) => (
+          {notes.slice(0, 4).map((note) => (
             <NoteItem key={note.id} note={note} className="" />
           ))}
         </div>

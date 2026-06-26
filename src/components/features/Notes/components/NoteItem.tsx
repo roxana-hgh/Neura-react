@@ -19,7 +19,7 @@ function NoteItem({note, className=""}: Iptops) {
                     </span>
                 </div>
                 <span className="text-xs text-muted-foreground">
-                    {new Date(note.created_at).toLocaleDateString("en-US", {
+                    {new Date(note.createdAt).toLocaleDateString("en-US", {
                         year: "numeric",
                         month: "short",
                         day: "numeric",

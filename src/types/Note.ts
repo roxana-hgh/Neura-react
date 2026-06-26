@@ -5,7 +5,7 @@ export interface Note {
   title: string;
   description: string | null;
   color: colors
-  created_at: string;
+  createdAt: string;
 }
 
 
