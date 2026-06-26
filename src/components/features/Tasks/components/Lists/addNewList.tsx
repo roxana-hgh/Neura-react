@@ -13,6 +13,7 @@ import {
 import { Button } from "../../../../ui/button";
 import ListForm from "./Listform";
 import { useCreateList } from "../../hooks/useTasks";
+import { toast } from "../../../../../lib/toast";
 
 interface Iprops {
   iconOnlyTrigger?: boolean;
@@ -29,7 +30,11 @@ const handleSubmit = (values: any) => {
     onSuccess: (list) => {
       addList(list);
     setOpen(false);
+    toast.success("List created successfully!");
     },
+    onError: (error) => {
+      toast.error(`Error creating list: ${error.message}`);
+    }
   });
 };
 

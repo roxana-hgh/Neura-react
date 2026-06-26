@@ -11,7 +11,7 @@ export interface TaskProgress {
 }
 
 export const useTaskProgress = (listId: string | number): TaskProgress => {
-  const tasks = useTasksByList(listId);
+  const { data: tasks = [] } = useTasksByList(String(listId));
 
   return useMemo(() => {
     const totalTasks = tasks.length;

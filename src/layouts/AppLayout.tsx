@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import { SidebarProvider } from "../components/ui/sidebar";
 import SidebarNav from "./Nav/SidebarNav";
 import Header from "./Header";
+import { Toaster } from "../components/ui/sonner";
 
 function AppLayout() {
   return (
@@ -12,6 +13,7 @@ function AppLayout() {
         <main className="w-full px-6 py-6 container mx-auto">
           <Outlet />
         </main>
+         <Toaster />
       </div>
     </SidebarProvider>
   );

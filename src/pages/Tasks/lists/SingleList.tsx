@@ -21,8 +21,9 @@ function SingleList() {
 
   const navigate = useNavigate();
 
-  const { data: list, isLoading } = useTaskList(listId);
-  const Tasks = useTasksByList(listId);
+  const { data: list, isPending : isLoading } = useTaskList(listId);
+  const { data: Tasks,  isPending :isTasksLoading } = useTasksByList(listId);
+
 
   const [alertOpen, setAlertOpen] = useState(false);
 
@@ -43,7 +44,7 @@ function SingleList() {
   return (
     <>
       <div className="tasks-page container mx-auto ">
-        {list ? (
+        {!isLoading && list ? (
           <>
             <div className="flex items-start justify-between  mb-3">
               <div className="flex items-start gap-2">
@@ -73,7 +74,15 @@ function SingleList() {
               </div>
             </div>
             <div className="mb-3">
-              <TasksList tasks={Tasks} label={list?.name ?? " "} />
+              
+              {!isTasksLoading ? (
+                <TasksList tasks={Tasks} label={list?.name ?? " "} />) 
+              : (
+                <div className="py-5">
+                  <Loader />
+                </div>
+              )
+              }
             </div>
           </>
         ) : (

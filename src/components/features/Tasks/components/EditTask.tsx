@@ -13,6 +13,7 @@ import TaskForm from "./TaskForm";
 import type { TaskFormValues } from "../schema/task.schema";
 import type { Task } from "../../../../types/Tasks";
 import { useUpdateTask } from "../hooks/useTasks";
+import { toast } from "../../../../lib/toast";
 
 interface IProps {
   task: Task;
@@ -30,7 +31,11 @@ function EditTask({ task, trigger }: IProps) {
       { id: task.id, values: data },
       {
         onSuccess: () => {
+          toast.success("Task updated successfully!");
           setOpen(false);
+        },
+        onError: (error) => {
+          toast.error(`Error updating task: ${error.message}`);
         },
       },
     );

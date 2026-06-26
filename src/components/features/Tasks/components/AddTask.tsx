@@ -11,8 +11,8 @@ import {
 } from "../../../ui/dialog";
 import { Button } from "../../../ui/button";
 import type { TaskFormValues } from "../schema/task.schema";
-import { useTasksStore } from "../stores/tasks";
 import { useCreateTask } from "../hooks/useTasks";
+import { toast } from "../../../../lib/toast";
 
 
 interface IProps {
@@ -23,16 +23,18 @@ interface IProps {
 
 function AddNewTask({ defaultListId }: IProps) {
   const [openModal, setOpenModal] = useState(false);
-  const addTask = useTasksStore((s) => s.addTask);
 
 const { mutate: createTask } = useCreateTask();
 
 const handleSubmit = (values: TaskFormValues) => {
   createTask(values, {
-    onSuccess: (task) => {
-      addTask(task);      // → updates store → selectors re-run instantly
+    onSuccess: () => {
      setOpenModal(false);
+     toast.success("Task created successfully!");
     },
+    onError: (error) => {
+      toast.error(`Error creating task: ${error.message}`);
+    }
   });
 };
 

@@ -15,6 +15,8 @@ import {
 import { Button } from "../../../../ui/button";
 import ListForm from "./Listform";
 import { useUpdateList } from "../../hooks/useTasks";
+import { toast } from "../../../../../lib/toast";
+
 
 interface IProps {
   list: TaskList;
@@ -36,7 +38,14 @@ function EditList({ list, trigger }: IProps) {
         onSuccess: (updated) => {
           updateStore(list.id, updated);
           queryClient.invalidateQueries({ queryKey: ["task-lists"] });
+          queryClient.setQueryData(["task-list", list.id], updated);
+
           setOpen(false);
+          toast.success("List has been updated")
+        },
+        onError: (error) => {
+          console.error("Error updating list:", error);
+          toast.error("Failed to update list");  
         },
       },
     );
