@@ -19,9 +19,10 @@ interface IProps {
   // Pass the current list's id when rendering this button inside a list page.
   // Leave undefined (or don't pass it) on the "All Tasks" page.
   defaultListId?: string | number | null;
+    initialDueDate?: Date; 
 }
 
-function AddNewTask({ defaultListId }: IProps) {
+function AddNewTask({ defaultListId, initialDueDate  }: IProps) {
   const [openModal, setOpenModal] = useState(false);
 
 const { mutate: createTask } = useCreateTask();
@@ -38,20 +39,10 @@ const handleSubmit = (values: TaskFormValues) => {
   });
 };
 
-  // const submitHandler = (data: TaskFormValues) => {
-  //   addTask({
-  //     ...data,
-  //     id: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) + 5,
-  //     completed: false,
-  //     created_at: new Date().toISOString().split("T")[0],
-  //     subtasks: [],
-  //     // list_id comes from the form — already set correctly
-  //     list_id: data.list_id ?? null,
-  //     description: data.description ?? null,
-  //     due_date: data.due_date ?? null,
-  //   });
-  //   setOpenModal(false);
-  // };
+  // Convert Date → "YYYY-MM-DD" string that TaskForm expects
+  const initialValues = initialDueDate
+    ? { due_date: initialDueDate.toISOString().split("T")[0] } // ← new
+    : undefined;
 
   return (
     <Dialog open={openModal} onOpenChange={setOpenModal}>
@@ -72,6 +63,7 @@ const handleSubmit = (values: TaskFormValues) => {
         <TaskForm
           defaultListId={defaultListId}
           onSubmit={handleSubmit}
+          initialValues={initialValues}
           submitLabel="Add Task"
         />
       </DialogContent>

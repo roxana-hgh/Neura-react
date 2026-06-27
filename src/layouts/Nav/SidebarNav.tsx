@@ -1,4 +1,4 @@
-import {  Home, Settings, StickyNote , CircleCheckBig, Timer, Stars } from "lucide-react";
+import {  Home, Settings, StickyNote , CircleCheckBig, Timer, Stars, Calendar } from "lucide-react";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarRail } from "../../components/ui/sidebar";
 import { useTasksStore } from "../../components/features/Tasks/stores/tasks";
 import { getListColorClass } from "../../components/features/Tasks/utils/colorMapper";
@@ -21,11 +21,11 @@ const items = [
     url: "/tasks",
     icon: CircleCheckBig,
   },
-  // {
-  //   title: "Calendar",
-  //   url: "#",
-  //   icon: Calendar,
-  // },
+  {
+    title: "Calendar",
+    url: "/calendar",
+    icon: Calendar,
+  },
 
   {
     title: "Notes",

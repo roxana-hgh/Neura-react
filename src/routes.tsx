@@ -12,6 +12,7 @@ import SignUpPage from "./pages/Auth/SignUpPage";
 import AddEditNotePage from "./pages/Notes/AddEditNote";
 import ProtectedRoute from "./components/features/user/ProtectedRoute";
 import GuestRoute from "./components/features/user/GuestRoute";
+import { CalendarPage } from "./pages/Tasks/CalendarPage";
 
 
 export const router = createBrowserRouter([
@@ -25,6 +26,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <Dashboard /> },
       { path: "tasks", element: <TasksPage /> },
+      { path: "calendar", element: <CalendarPage /> },
       { path: "lists", element: <AllLists /> },
       { path: "list/:id", element: <SingleList /> },
       { path: "notes", element: <AllNotesPage /> },

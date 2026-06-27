@@ -248,3 +248,93 @@
 } 
 
 
+/* Override react-big-calendar defaults to match your theme */
+.rbc-calendar {
+  font-family: inherit;
+  color: var(--foreground);
+  background: transparent;
+}
+
+.rbc-header {
+  padding: 8px 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground);
+  border-bottom: 1px solid var(--border);
+}
+
+.rbc-month-view,
+.rbc-time-view {
+  border: none;
+}
+
+.rbc-day-bg + .rbc-day-bg,
+.rbc-month-row + .rbc-month-row,
+.rbc-header + .rbc-header {
+  border-color: var(--border);
+}
+
+.rbc-off-range-bg {
+  background: var(--muted);
+  opacity: 0.4;
+}
+
+.rbc-today {
+  background-color: color-mix(in srgb, var(--primary) 8%, transparent);
+}
+
+.rbc-date-cell {
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  color: var(--foreground);
+}
+
+.rbc-date-cell.rbc-now {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.rbc-toolbar {
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.rbc-toolbar button {
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  background: transparent;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.rbc-toolbar button:hover {
+  background: var(--muted);
+}
+
+.rbc-toolbar button.rbc-active {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-color: var(--primary);
+}
+
+.rbc-toolbar-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.rbc-show-more {
+  color: var(--primary);
+  font-size: 0.75rem;
+}
+
+.rbc-event:focus {
+  outline: none;
+}
+
